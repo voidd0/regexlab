@@ -1,0 +1,44 @@
+{
+  "name": "@v0idd0/regexlab",
+  "version": "1.0.0",
+  "description": "regexlab \u2014 explain regex patterns in plain English. Token-by-token breakdown: anchors, character classes, quantifiers, groups, lookarounds, flags. CLI + library. Free forever from v\u00f8iddo.",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "regexlab": "./bin/regexlab.js"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "regex",
+    "regular-expressions",
+    "explain",
+    "cli",
+    "developer-tools",
+    "voiddo"
+  ],
+  "author": "v\u00f8iddo <support@voiddo.com> (https://voiddo.com)",
+  "license": "MIT",
+  "homepage": "https://tools.voiddo.com/regexlab/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidd0/regexlab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voidd0/regexlab/issues",
+    "email": "support@voiddo.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ]
+}
