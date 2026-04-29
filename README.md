@@ -14,7 +14,7 @@ pattern: \d{3}-\d{4}
 ## Install
 
 ```bash
-npm install -g rtfm-regexlab
+npm install -g @v0idd0/regexlab
 ```
 
 ## Usage
@@ -52,7 +52,7 @@ You wrote a regex six months ago. You don't remember what it does. The grep manu
 ## Programmatic API
 
 ```javascript
-import { explain, format } from 'rtfm-regexlab';
+import { explain, format } from '@v0idd0/regexlab';
 
 const result = explain('/^\\d{3}-\\d{4}$/g');
 console.log(format(result));
@@ -65,3 +65,7 @@ console.log(result.tokens);
 ## License
 
 MIT — part of the [vøiddo](https://voiddo.com) tools collection.
+
+---
+
+Built by [vøiddo](https://voiddo.com/) — a small studio shipping AI-flavoured products, free dev tools, Chrome extensions and weird browser games.
