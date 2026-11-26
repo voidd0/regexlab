@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "bin": {
-    "regexlab": "./bin/regexlab.js"
+    "regexlab": "bin/regexlab.js"
   },
   "scripts": {
     "test": "node test.js"
