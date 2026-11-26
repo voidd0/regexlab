@@ -1,11 +1,5 @@
-// regexlab — explain regex patterns in plain english.
-//
-// pure parser. no external deps. handles common ECMAScript regex constructs:
-// anchors, character classes, quantifiers, groups, alternation, backreferences,
-// lookarounds, escape sequences. unknown constructs degrade to "unexplained".
-
 const NAMED_CHARCLASSES = {
-  '\\d': 'a digit (0–9)',
+  '\\d': 'a digit (0 to 9)',
   '\\D': 'a non-digit',
   '\\w': 'a word character (letter, digit, or underscore)',
   '\\W': 'a non-word character',
@@ -135,7 +129,7 @@ export function explain(pattern) {
 
     // Alternation
     if (ch === '|') {
-      out.push({ token: '|', explanation: 'OR — match either side of this' });
+      out.push({ token: '|', explanation: 'OR: match either side of this' });
       i += 1;
       continue;
     }

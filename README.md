@@ -1,28 +1,10 @@
 # regexlab
 
-[![npm version](https://img.shields.io/npm/v/@v0idd0/regexlab.svg?color=A0573A)](https://www.npmjs.com/package/@v0idd0/regexlab)
-[![npm downloads](https://img.shields.io/npm/dw/@v0idd0/regexlab.svg?color=1F1A14)](https://www.npmjs.com/package/@v0idd0/regexlab)
-[![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
-[![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
+Explains a regular expression in plain English, token by token. Reach for it when you meet a pattern you did not write and want to know what it matches.
 
-**[Homepage](https://tools.voiddo.com/regexlab/?ref=regexlab-readme)** · **[GitHub](https://github.com/voidd0/regexlab)** · **[npm](https://www.npmjs.com/package/@v0idd0/regexlab)** · **[All tools](https://tools.voiddo.com/?ref=regexlab-catalog-readme)** · **[Contact](mailto:support@voiddo.com)**
-
----
-
-Explain regex patterns in plain english. Read the manual.
-
-```
-$ regexlab '\d{3}-\d{4}'
-pattern: \d{3}-\d{4}
-
-\d{3}        → a digit (0-9) exactly 3 times
--            → the literal character "-"
-\d{4}        → a digit (0-9) exactly 4 times
-```
-
-## Why regexlab
-
-You wrote a regex six months ago. You don't remember what it does. Today's reviewer wants you to explain it. Stack Overflow answers from 2014 paraphrase, regex101 wants your network and your eyes, and the real `man re_format(7)` is hostile if you only need it twice a year. regexlab is the explainer that lives in your terminal, local, offline-capable, no popovers.
+[![npm](https://img.shields.io/npm/v/@v0idd0/regexlab?color=00f6d0&labelColor=050914)](https://www.npmjs.com/package/@v0idd0/regexlab)
+[![test](https://github.com/voidd0/regexlab/actions/workflows/test.yml/badge.svg)](https://github.com/voidd0/regexlab/actions/workflows/test.yml)
+[![license](https://img.shields.io/badge/license-MIT-00f6d0?labelColor=050914)](LICENSE)
 
 ## Install
 
@@ -30,89 +12,66 @@ You wrote a regex six months ago. You don't remember what it does. Today's revie
 npm install -g @v0idd0/regexlab
 ```
 
+Or run it once without installing: `npx @v0idd0/regexlab --help`. Needs Node.js 18 or newer. No dependencies.
+
+## Example
+
+Explain a phone-style pattern. Output from a real run on 2026-11-26:
+
+```console
+$ regexlab '^\d{3}-\d{4}$'
+pattern: ^\d{3}-\d{4}$
+
+^            → match the start of the string
+\d           → a digit (0 to 9) exactly 3 times
+-            → the literal character "-"
+\d           → a digit (0 to 9) exactly 4 times
+$            → match the end of the string
+```
+
+A pattern with flags and a lookahead:
+
+```console
+$ regexlab '/(\d{3})-(?=\d{4})/g'
+pattern: /(\d{3})-(?=\d{4})/g
+flags: g = global (match all occurrences, not just the first)
+
+(\d{3})      → capturing group containing: \d
+  \d         ↳ a digit (0 to 9) exactly 3 times
+-            → the literal character "-"
+(?=\d{4})    → positive lookahead containing: \d
+  \d         ↳ a digit (0 to 9) exactly 4 times
+```
+
 ## Usage
 
-```bash
-# Explain a bare pattern
-regexlab '\d{3}-\d{4}'
+```text
+regexlab: explain a regular expression in plain English
 
-# Explain with flags
-regexlab '/foo|bar/gi'
+Usage:
+  regexlab '<pattern>'           explain a pattern (wrap it in single quotes)
+  regexlab '/<pattern>/<flags>'  explain a pattern with flags
+  regexlab --json '<pattern>'    print the explanation as JSON
+  regexlab -V, --version         print the version
+  regexlab -h, --help            show this help
 
-# JSON output for piping
-regexlab --json '^[a-z]+$' | jq '.tokens'
+Examples:
+  regexlab '\d{3}-\d{4}'
+  regexlab '^[a-zA-Z0-9._-]+@example\.com$'
+  regexlab '/foo|bar/gi'
 
-# Help
-regexlab --help
+Docs and issues: https://github.com/voidd0/regexlab
 ```
 
-## What teams use it for
+## Limits
 
-- code reviews: quickly document what a new regex actually matches before approving a PR
-- CI and linting: output deterministic token explanations to include in PR logs
-- incident response: explain opaque alert patterns under time pressure
-- onboarding: create a quick glossary of regex tokens for teammates
-
-### vs regex101.com and friends
-
-`regexlab` and online testers solve different tasks:
-
-- Use **regexlab** when you need a deterministic, offline explanation of pattern syntax.
-- Use **regex testers** when you need live sample matching, capture groups, or multi-engine behavior.
-
-Use `--json` when you want stable machine output for docs or scripts, and run it twice if you need a quick local pattern diff.
-
-## What it handles
-
-- Anchors: `^`, `$`, `\b`, `\B`
-- Character classes: `\d`, `\D`, `\w`, `\W`, `\s`, `\S`, `[...]`, `[^...]`
-- Quantifiers: `*`, `+`, `?`, `{n}`, `{n,}`, `{n,m}`
-- Groups: capturing `(...)`, non-capturing `(?:...)`, named `(?<name>...)`
-- Lookarounds: `(?=...)`, `(?!...)`, `(?<=...)`, `(?<!...)`
-- Alternation: `|`
-- Escapes: `\.`, `\\`, `\(`, etc.
-- Backreferences: `\1` through `\9`
-- Flags: `g`, `i`, `m`, `s`, `u`, `y`
-
-## Compared to alternatives
-
-| tool | offline? | network IO | per-token explanation | regex101-style match testing |
-|---|---|---|---|---|
-| regexlab | yes | none | yes | optional via API |
-| regex101.com | no | tracks input | yes | yes (web) |
-| regexr.com | no | tracks input | yes | yes (web) |
-| `pcregrep --explain` | yes | none | terse | no |
-| ChatGPT/Claude | depends | sends pattern | conversational | manual |
-
-If you're authoring a long regex and want hover-to-test feedback, regex101 is unbeatable. If you're explaining a regex *in your terminal* (in a code review, in a hook, on a server you SSHed into), regexlab is the one that fits the workflow.
-
-## FAQ
-
-**Does it actually run the regex against test strings?** Only via the programmatic API (returns matches if you pass a `subject` string). The CLI is explanation-only because that's the dominant use case.
-
-**Is it accurate on PCRE-only features?** Most of what JavaScript's RegExp supports is the safe subset. Lookbehinds, named groups, atomic groups, covered. `\K` and balanced groups (.NET) are explicitly out of scope and the parser will say so.
-
-**Why doesn't it suggest a "better" regex?** Because "better" depends on whether you're optimizing for readability, backtracking safety, or one of nine character-class alternatives. Static suggestions miss the point, regexlab explains, doesn't editorialize.
-
-**Will it choke on a 4KB regex?** Try us. The tokenizer is recursive descent and has been fed several embarrassingly large captcha-bypass regexes in testing. The output gets long before the tool gets slow.
-
-## Programmatic API
-
-```javascript
-import { explain, format } from '@v0idd0/regexlab';
-
-const result = explain('/^\\d{3}-\\d{4}$/g');
-console.log(format(result));
-
-// Or get structured output:
-console.log(result.tokens);
-// [{ token: '\\d{3}', explanation: '...' }, ...]
-```
+It reads ECMAScript syntax. Plain letters are explained one character at a time, so a long literal gives one line per letter. Constructs it does not know are reported as unexplained. Add `--json` to get the same explanation as data.
 
 ## License
 
-MIT.
+MIT, see [LICENSE](LICENSE).
 
 ---
 
-Maintained by v0idd0.
+Made by [vøiddo](https://voiddo.com/?src=gh). More command line tools: [voiddo.com/packages](https://voiddo.com/packages/?src=gh).
+We also run data scrapers for job boards, shops and ad libraries: [voiddo.com/scrapers](https://voiddo.com/scrapers/?src=gh).
